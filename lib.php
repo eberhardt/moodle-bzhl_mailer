@@ -163,7 +163,7 @@ function local_bzhl_mailer_registration($eventdata) {
 		// Disabled by setting
 		return true;
 	}
-	$cm = $eventdata->get_course_module();
+	$cm = get_coursemodule_from_id("registration", $eventdata->contextinstanceid, $eventdata->courseid);
 	$user = get_complete_user_data("id", $eventdata->userid);
 	$courses = explode("\n", get_config("local_bzhl_mailer", "courses"));
 	if (!in_array($cm->course, $courses)) {
