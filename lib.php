@@ -82,10 +82,11 @@ function local_bzhl_mailer_confirmation(stdClass $user) {
 	}
 	$subject = "User registration confirmed";
 	$message = "The registration of following student has been confirmed:\n\n"
-			. fullname($user) . "\n"
-					. $user->email . "\n\n"
-							. "Visit the profile: " . $CFG->wwwroot . "/user/profile.php?id=" . $user->id . "\n\n"
-									. "--\nThis message was created automatically.";
+	         . "Username: " . $user->username . "\n"
+	         . "Fullname: " . fullname($user) . "\n"
+	         . "Email:    " . $user->email . "\n\n"
+	         . "Visit the profile: " . $CFG->wwwroot . "/user/profile.php?id=" . $user->id . "\n\n"
+	         . "--\nThis message was created automatically.";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
@@ -176,8 +177,8 @@ function local_bzhl_mailer_registration($eventdata) {
 	$message = "The following registration has been saved:\n\n"
 	         . "Name:     " . fullname($user) . "\n"
 	         . "Workshop: " . $name . "\n\n"
-	         . "\t* Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$cm->course}\n"
-	         . "\t* Visit the registration:   {$CFG->wwwroot}/mod/registration/view.php?id={$cm->id}\n\n"
+	         . "Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$cm->course}\n"
+	         . "Visit the registration:   {$CFG->wwwroot}/mod/registration/view.php?id={$cm->id}\n\n"
 	 	     . "--\nThis message was created automatically.";
 
 	return local_bzhl_mailer_send($subject, $message);
