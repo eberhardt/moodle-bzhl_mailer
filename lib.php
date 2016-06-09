@@ -179,8 +179,8 @@ function local_bzhl_mailer_unenrol($eventdata) {
 	$cname = $DB->get_field("course", "fullname", array("id" => $eventdata->courseid));
 	$subject = "User unsubscribed from a course";
 	$message = "The student " . fullname($user) . " has unsubscribed to the course `{$cname}` successfully.\n\n"
-	. "Visit the user profile: {$CFG->wwwroot}/user/view.php?id={$user->id}\n\n"
-	. "--\nThis message was created automatically.";
+	         . "Visit the user profile: {$CFG->wwwroot}/user/view.php?id={$user->id}\n\n"
+	         . "--\nThis message was created automatically.";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
@@ -213,7 +213,7 @@ function local_bzhl_mailer_registration($eventdata) {
 	         . "Workshop: " . $name . "\n\n"
 	         . "Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$cm->course}\n"
 	         . "Visit the registration:   {$CFG->wwwroot}/mod/registration/view.php?id={$cm->id}\n\n"
-	 	     . "--\nThis message was created automatically.";
+	         . "--\nThis message was created automatically.";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
