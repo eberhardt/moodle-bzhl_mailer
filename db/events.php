@@ -18,4 +18,9 @@ $observers = array(
 		      'includefile' => '/local/bzhl_mailer/lib.php',
 		      'callback' => 'local_bzhl_mailer_registration',
 		      'priority' => 200
-		      ));
+		      ),
+
+		array('eventname' => '\core\event\user_enrolment_deleted',
+		      'includefile' => '/local/bzhl_mailer/lib.php',
+		      'callback' => 'local_bzhl_mailer_unenrol',
+		      'priority' => 200));
