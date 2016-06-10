@@ -161,10 +161,6 @@ function local_bzhl_mailer_enrolment($eventdata) {
 function local_bzhl_mailer_unenrol($eventdata) {
 	global $CFG, $DB;
 
-	if ($eventdata->other["enrol"] !== "self") {
-		// Only on self-enrolment.
-		return true;
-	}
 	if (!local_bzhl_mailer_is_enabled("emailonenrolment")) {
 		// Disabled by setting.
 		return true;
