@@ -26,10 +26,16 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->locate("localplugins")) {
 	$tmp = new admin_settingpage("bzhl_mailer", get_string("pluginname", "local_bzhl_mailer"));
+	$tmp->add(new admin_setting_heading("local_bzhl_mailer/emailsettings", get_string("emailsettings", "local_bzhl_mailer")));
+	$tmp->add(new admin_setting_configtext("local_bzhl_mailer/subjectprefix",
+	                                       get_string("subjectprefix", "local_bzhl_mailer"),
+	                                       get_string("subjectprefix_info", "local_bzhl_mailer"),
+	                                       null));
 	$tmp->add(new admin_setting_configtextarea("local_bzhl_mailer/recipents",
 	                                           get_string("emails", "local_bzhl_mailer"),
 	                                           get_string("emails_info", "local_bzhl_mailer"),
-	                                                ""));
+	                                           ""));
+	$tmp->add(new admin_setting_heading("local_bzhl_mailer/eventsettings", get_string("eventsettings", "local_bzhl_mailer")));
 	$tmp->add(new admin_setting_configtextarea("local_bzhl_mailer/courses",
 	                                           get_string("courses", "local_bzhl_mailer"),
 	                                           get_string("courses_info", "local_bzhl_mailer"),

@@ -25,12 +25,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string["pluginname"] = 'BZHL Mailer';
-$string["emails"] = 'E-Mail-Adressen';
+$string["emailsettings"] = 'Versandeinstellungen';
+$string["subjectprefix"] = 'Betreff-Präfix';
+$string["subjectprefix_info"] = 'Ein Text der dem Betreff aller E-Mail-Nachricht vorangestellt wird. Dies kann E-Mail-Clients helfen die vom BZHL Mailer generierten  Nachrichten zu filtern.';
+$string["emails"] = 'Empfängerliste';
 $string["emails_info"] = 'Zeilenseperierte Liste der E-Mail-Adressen, die über den Registrierungsstatus informiert werden (Best&auml;tigugng, Einschreibung, Registrierung).';
+$string["eventsettings"] = 'Ereignis-Einstellungen';
 $string["courses"] = 'Beobachtete Kurse';
 $string["courses_info"] = 'Liste der Kurse (ID), von denen Benachrichtigungen ausgehen (bei Selbsteinschreibung oder Registration).';
-$string["emailonregistration"] = 'E-Mail bei Anmeldung';
-$string["emailonregistration_info"] = 'Sendet eine Benachrichtigung an die Liste, wenn eine Anmeldung in einem der beobachteten Kurse abgeschlossen wurde.';
+$string["emailonregistration"] = 'E-Mail bei An-/Abmeldung';
+$string["emailonregistration_info"] = 'Sendet eine Benachrichtigung an die Liste, wenn eine An- oder Abmeldung in einem der beobachteten Kurse registriert wurde.';
 $string["emailonenrolment"] = 'E-Mail bei Ein-/Ausschreibung';
 $string["emailonenrolment_info"] = 'Sendet eine Benachrichtigung an die Liste, wenn sich Nutzende in einem der beobachteten Kurse ein- oder ausschreiben.';
 $string["emailonconfirmation"] = 'E-Mail bei Bestätigung';

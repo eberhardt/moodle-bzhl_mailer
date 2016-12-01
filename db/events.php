@@ -20,6 +20,12 @@ $observers = array(
 		      'priority' => 200
 		      ),
 
+		array('eventname' => '\mod_registration\event\user_unsubscribed',
+				'includefile' => '/local/bzhl_mailer/lib.php',
+				'callback' => 'local_bzhl_mailer_deregistration',
+				'priority' => 200
+		),
+
 		array('eventname' => '\core\event\user_enrolment_deleted',
 		      'includefile' => '/local/bzhl_mailer/lib.php',
 		      'callback' => 'local_bzhl_mailer_unenrol',

@@ -32,7 +32,8 @@ defined('MOODLE_INTERNAL') || die();
  */
 function local_bzhl_mailer_send($subject, $message) {
 	global $CFG;
-	$emails = explode("\n", get_config("local_bzhl_mailer", "recipents"));
+	$config = get_config("local_bzhl_mailer");
+	$emails = explode("\n", $config->recipents);
 	$recipents = array();
 	foreach ($emails as $address) {
 		if (validate_email($address)) {
@@ -45,8 +46,8 @@ function local_bzhl_mailer_send($subject, $message) {
 		$mail = get_mailer();
 		$mail->From = $CFG->noreplyaddress;
 		$mail->FromName = fullname($admin);
-		$mail->Subject = $subject;
-		$mail->Body = $message;
+		$mail->Subject = $config->subjectprefix . $subject;
+		$mail->Body = $message . "\n\n--\nThis message was created automatically.";
 		foreach ($recipents as $recipent) {
 			$mail->addAddress($recipent);
 		}
@@ -80,13 +81,13 @@ function local_bzhl_mailer_confirmation(stdClass $user) {
 		// Disabled by setting.
 		return true;
 	}
-	$subject = "User registration confirmed";
+	$fname = fullname($user);
+	$subject = "{$fname} confirmed the registration";
 	$message = "The registration of following student has been confirmed:\n\n"
-	         . "Username: " . $user->username . "\n"
-	         . "Fullname: " . fullname($user) . "\n"
-	         . "Email:    " . $user->email . "\n\n"
-	         . "Visit the profile: " . $CFG->wwwroot . "/user/profile.php?id=" . $user->id . "\n\n"
-	         . "--\nThis message was created automatically.";
+	         . "Username: {$user->username}\n"
+	         . "Fullname: {$fname}\n"
+	         . "Email:    {$user->email}\n\n"
+	         . "Visit the profile: {$CFG->wwwroot}/user/profile.php?id={$user->id}";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
@@ -107,13 +108,13 @@ function local_bzhl_mailer_creation($eventdata) {
 		return true;
 	}
 	$user = get_complete_user_data("id", $eventdata->relateduserid);
-	$subject = "A new user has registered";
+	$fname = fullname($user);
+	$subject = "{$fname} has created a new account";
 	$message = "The following account was created:\n\n"
-	         . "Username: " . $user->username . "\n"
-	         . "Fullname: " . fullname($user) . "\n"
-	         . "Email:    " . $user->email . "\n\n"
-	         . "Visit the user profile: {$CFG->wwwroot}/user/profile.php?id={$user->id}\n\n"
-	         . "--\nThis message was created automatically.";
+	         . "Username: {$user->username}\n"
+	         . "Fullname: {$fname}\n"
+	         . "Email:    {$user->email}\n\n"
+	         . "Visit the user profile: {$CFG->wwwroot}/user/profile.php?id={$user->id}";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
@@ -142,11 +143,11 @@ function local_bzhl_mailer_enrolment($eventdata) {
 		return true;
 	}
 	$user = get_complete_user_data("id", $eventdata->userid);
+	$fname = fullname($user);
 	$cname = $DB->get_field("course", "fullname", array("id" => $eventdata->courseid));
-	$subject = "User subscribed to a course";
-	$message = "The student " . fullname($user) . " has subscribed to the course `{$cname}` successfully.\n\n"
-	         . "Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$eventdata->courseid}\n\n"
-	         . "--\nThis message was created automatically.";
+	$subject = "{$fname} subscribed to a course";
+	$message = "The student {$fname} has subscribed to the course `{$cname}` successfully.\n\n"
+	         . "Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$eventdata->courseid}";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
@@ -172,11 +173,11 @@ function local_bzhl_mailer_unenrol($eventdata) {
 		return true;
 	}
 	$user = get_complete_user_data("id", $eventdata->userid);
+	$fname = fullname($user);
 	$cname = $DB->get_field("course", "fullname", array("id" => $eventdata->courseid));
-	$subject = "User unsubscribed from a course";
-	$message = "The student " . fullname($user) . " has unsubscribed to the course `{$cname}` successfully.\n\n"
-	         . "Visit the user profile: {$CFG->wwwroot}/user/view.php?id={$user->id}\n\n"
-	         . "--\nThis message was created automatically.";
+	$subject = "{$fname} unsubscribed from a course";
+	$message = "The student {$fname} has unsubscribed to the course `{$cname}` successfully.\n\n"
+	         . "Visit the user profile: {$CFG->wwwroot}/user/view.php?id={$user->id}";
 
 	return local_bzhl_mailer_send($subject, $message);
 }
@@ -201,15 +202,47 @@ function local_bzhl_mailer_registration($eventdata) {
 		return true;
 	}
 	// May use section name or activity name... not sure
-	$name = $DB->get_field("course_sections", "name", array("id" => $cm->section));
-	//$name = $DB->get_field("registration", "name", array("id" => $cm->instance)); // optional
-	$subject = "User registered succesfully";
+	$fname   = fullname($user);
+	$secname = $DB->get_field("course_sections", "name", array("id" => $cm->section));
+	$regname = $DB->get_field("registration", "name", array("id" => $cm->instance)); // optional
+	$subject = "{$fname} registered succesfully";
 	$message = "The following registration has been saved:\n\n"
-	         . "Name:     " . fullname($user) . "\n"
-	         . "Workshop: " . $name . "\n\n"
+	         . "Name:     {$fname}\n"
+	         . "Workshop: {$regname} ({$secname})\n\n"
 	         . "Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$cm->course}\n"
-	         . "Visit the registration:   {$CFG->wwwroot}/mod/registration/view.php?id={$cm->id}\n\n"
-	         . "--\nThis message was created automatically.";
+	         . "Visit the registration:   {$CFG->wwwroot}/mod/registration/view.php?id={$cm->id}";
+
+	return local_bzhl_mailer_send($subject, $message);
+}
+
+/**
+ * Sends unregistration notfication
+ *
+ * @param stdClass $eventdata
+ * @return boolean
+ * @see https://docs.moodle.org/dev/Events_API#Handling_an_event
+ */
+function local_bzhl_mailer_deregistration($eventdata) {
+	global $CFG, $DB;
+	if (!local_bzhl_mailer_is_enabled("emailonregistration")) {
+		// Disabled by setting
+		return true;
+	}
+	$cm = get_coursemodule_from_id("registration", $eventdata->contextinstanceid, $eventdata->courseid);
+	$user = get_complete_user_data("id", $eventdata->userid);
+	$courses = explode("\n", get_config("local_bzhl_mailer", "courses"));
+	if (!in_array($cm->course, $courses)) {
+		return true;
+	}
+	$fname   = fullname($user);
+	$secname = $DB->get_field("course_sections", "name", array("id" => $cm->section));
+	$regname = $DB->get_field("registration", "name", array("id" => $cm->instance));
+	$subject = "{$fname} deregistered succesfully";
+	$message = "The following registration has been removed:\n\n"
+	         . "Name:     {$fname}\n"
+	         . "Workshop: {$regname} ({$secname})\n\n"
+	         . "Visit the course profile: {$CFG->wwwroot}/user/view.php?id={$user->id}&course={$cm->course}\n"
+	         . "Visit the registration:   {$CFG->wwwroot}/mod/registration/view.php?id={$cm->id}";
 
 	return local_bzhl_mailer_send($subject, $message);
 }

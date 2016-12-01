@@ -25,12 +25,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string["pluginname"] = 'BZHL Mailer';
-$string["emails"] = 'Email adresses';
+$string["emailsettings"] = 'Send Options';
+$string["subjectprefix"] = 'Subject prefix';
+$string["subjectprefix_info"] = 'A string which is prepended on the subject of every mail. This may help email clients to filter the automated messages.';
+$string["emails"] = 'Recipents';
 $string["emails_info"] = 'List of email adresses, which are to be noticed about the registration procedure (confirmation, subscription, registration)';
+$string["eventsettings"] = 'Event management';
 $string["courses"] = 'Watched courses';
 $string["courses_info"] = 'List of courses (ID), which will send notifications (on self-subscription and registration).';
-$string["emailonregistration"] = 'Email on registration';
-$string["emailonregistration_info"] = 'Sends an email notification to the list, when a registration was submitted in one of the specified courses.';
+$string["emailonregistration"] = 'Email on registration/deregistration';
+$string["emailonregistration_info"] = 'Sends an email notification to the list, when a registration or deregistration was submitted in one of the specified courses.';
 $string["emailonenrolment"] = 'Email on (un)enrolment';
 $string["emailonenrolment_info"] = 'Sends an email notification to the list, when a user enrols or unenrols in one of the specified courses.';
 $string["emailonconfirmation"] = 'Email on confirmation';

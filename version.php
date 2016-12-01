@@ -25,6 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_bzhl_mailer';
-$plugin->version = 20150113112;
-$plugin->release = 'v1.02';
+$plugin->version = 20150113115;
+$plugin->release = 'v1.03';
 $plugin->maturity = MATURITY_RC;
